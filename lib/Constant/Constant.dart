@@ -3,7 +3,7 @@ library Constants;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-const String API_URL="";
+const String API_URL="https://ichapps.com/RestApi/App/";
 
 String SIGNUP_SCREEN = '/SignupPage',
     IMAGE_SPLASH_SCREEN = '/ImageSplashScreen',

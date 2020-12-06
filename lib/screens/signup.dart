@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ichsampleapp/models/CountryService.dart';
 import 'package:http/http.dart' as http;
 import 'package:ichsampleapp/models/countries.dart';
 import 'dart:convert';
@@ -24,67 +25,25 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
 
-  //static List<Countries> countries = new List<Countries>();
-  CountriesList _countriesList = new CountriesList();
-  CountriesList country_records;
-
-  bool loading = true;
-  var countryList;
-
+  CountriesList _records = new CountriesList();
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Countries>> key = new GlobalKey();
 
-  Future<CountriesList> getCountries() async{
-
-    try{
-
-      var url = 'https://ichapps.com/RestApi/App/Commons/country_list';
-
-      final response = await http.get(url);
-      if(response.statusCode == 200){
-
-        var body = json.decode(response.body);
-        var statusCode = body['status'];
-
-        if(statusCode== true){
-
-          Map<String, dynamic> map = json.decode(response.body);
-          countryList = map['data'];
-
-          country_records =
-          new CountriesList.fromJson(countryList);
-
-          Countries record;
-          setState(() {
-            for (record in country_records.records) {
-              this._countriesList.records.add(record);
-            }
-          });
-
-        }
-
-        setState(() {
-          loading = false;
-        });
-
+  void _loadCountries() async {
+    CountriesList records = await CountryService().getCountries();
+    Countries record;
+    setState(() {
+      for (record in records.records) {
+        this._records.records.add(record);
       }
-
-      else{
-        print("error getting countries");
-
-      }
-
-    }catch(e){
-      print("error getting countries");
-
-    }
-    return country_records;
+    });
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    getCountries();
+    _records.records = new List();
+    _loadCountries();
     super.initState();
   }
 
@@ -154,67 +113,54 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                             ),
                             SizedBox(height: 15.0),
-
-                            /* Container(
-                    child: Stack(
-                      children: <Widget>[
-                        loading
-                            ? CircularProgressIndicator()
-                            : searchTextField = AutoCompleteTextField<Countries>(
-                          key: key,
-                          clearOnSubmit: false,
-                          suggestions: countryList,
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
-                            hintText: "Search Name",
-                            hintStyle: TextStyle(color: Colors.black),
-                          ),
-                          itemFilter: (item, query) {
-                            return item.name
-                                .toLowerCase()
-                                .startsWith(query.toLowerCase());
-                          },
-                          itemSorter: (a, b) {
-                            return a.name.compareTo(b.name);
-                          },
-                          itemSubmitted: (item) {
-                            setState(() {
-                              searchTextField.textField.controller.text = item.name;
-                            });
-                          },
-                          itemBuilder: (context, item) {
-                            // ui for the autocompelete row
-                            return row(item);
-                          },
-                        ),
-
-                      ],
-                    ),
-                  ),*/
-
-                            TextField(
-                              decoration: InputDecoration(
-                                  labelText: 'Select Country',
-                                  labelStyle: TextStyle(
-
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.green)
-                                  )
+                            Container(
+                              child: Stack(
+                                children: <Widget>[
+                                  searchTextField = AutoCompleteTextField<Countries>(
+                                      style: new TextStyle(color: Colors.black, fontSize: 16.0),
+                                      decoration: new InputDecoration(
+                                          suffixIcon: Container(
+                                            width: 85.0,
+                                            height: 60.0,
+                                          ),
+                                          contentPadding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
+                                          filled: true,
+                                          hintText: 'Search Country Name',
+                                          hintStyle: TextStyle(color: Colors.black)),
+                                      itemSubmitted: (item) {
+                                        setState(() => searchTextField.textField.controller.text =
+                                            item.name);
+                                      },
+                                      clearOnSubmit: false,
+                                      key: key,
+                                      suggestions: _records.records,
+                                      itemBuilder: (context, item) {
+                                        return Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Text(item.name,
+                                              style: TextStyle(
+                                                  fontSize: 16.0
+                                              ),),
+                                          ],
+                                        );
+                                      },
+                                      itemSorter: (a, b) {
+                                        return a.name.compareTo(b.name);
+                                      },
+                                      itemFilter: (item, query) {
+                                        return item.name
+                                            .toLowerCase()
+                                            .startsWith(query.toLowerCase());
+                                      }),
+                                ],
                               ),
                             ),
-
                             SizedBox(height: 15.0),
-
                             TextField(
                               decoration: InputDecoration(
                                   labelText: 'Mobile Number',
                                   labelStyle: TextStyle(
-
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey
@@ -292,34 +238,11 @@ class _SignupPageState extends State<SignupPage> {
                                             fontWeight: FontWeight.bold,
                                             fontFamily: 'Montserrat')),
                                   ),
-
-
                                 ),
                               ),
                             ),
                           ],
                         )),
-                    // SizedBox(height: 15.0),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     Text(
-                    //       'New to Spotify?',
-                    //       style: TextStyle(
-                    //         fontFamily: 'Montserrat',
-                    //       ),
-                    //     ),
-                    //     SizedBox(width: 5.0),
-                    //     InkWell(
-                    //       child: Text('Register',
-                    //           style: TextStyle(
-                    //               color: Colors.green,
-                    //               fontFamily: 'Montserrat',
-                    //               fontWeight: FontWeight.bold,
-                    //               decoration: TextDecoration.underline)),
-                    //     )
-                    //   ],
-                    // )
                   ]
               ),
             ],
@@ -327,19 +250,4 @@ class _SignupPageState extends State<SignupPage> {
         ),
     );
   }
-}
-
-Widget row(Countries countries) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Text(
-        countries.name,
-        style: TextStyle(fontSize: 16.0),
-      ),
-      SizedBox(
-        width: 10.0,
-      ),
-    ],
-  );
 }
