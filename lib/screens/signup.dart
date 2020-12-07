@@ -9,6 +9,9 @@ import 'package:ichsampleapp/models/countriesList.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'activationcode.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 
 class SignupPage extends StatefulWidget {
@@ -149,6 +152,7 @@ class _SignupPageState extends State<SignupPage> {
                             SizedBox(height: 15.0),
                             TextField(
                               controller: _emailController,
+
                               decoration: InputDecoration(
                                   labelText: 'Email',
                                   labelStyle: TextStyle(
@@ -156,7 +160,7 @@ class _SignupPageState extends State<SignupPage> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey
                                   ),
-                                  errorText: emailValidation ? 'Email Can\'t Be Empty' : null,
+                                  errorText: emailValidation ? 'Invalid Email Format' : null,
                                   hintText: 'Email',
                                   hintStyle: TextStyle(
                                       color: Colors.grey, fontSize: 12.0),
@@ -246,7 +250,6 @@ class _SignupPageState extends State<SignupPage> {
                                   )
                               ),
                             ),
-
                             SizedBox(height: 50.0),
                             Container(
                                 height: 45.0,
@@ -255,8 +258,168 @@ class _SignupPageState extends State<SignupPage> {
                                   shadowColor: Colors.greenAccent,
                                   color: Colors.green,
                                   elevation: 7.0,
-                                  child: GestureDetector(
-                                    child: Center(
+                                  child: Material(
+                                    child: InkWell(
+                                      onTap: () async{
+                                        var connectivityResult = await (Connectivity().checkConnectivity());
+                                        if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+                                          // I am connected to a mobile network.
+                                          setState(() {
+                                            _nameController.text.isEmpty ? nameValidation = true : nameValidation = false;
+                                            _emailController.text.isEmpty ? emailValidation = true : emailValidation = false;
+                                            _mobileNumberController.text.isEmpty ? mobileValidation = true : mobileValidation = false;
+                                            _countryNameController.text.isEmpty ? countryNameValidation = true : countryNameValidation = false;
+                                            loading = true;
+                                          });
+                                        }
+                                        else
+                                        {
+                                          showInSnackBar("No internet available.Please check your internet connection");
+                                        }
+                                          pr.show();
+                                          var url =
+                                              API_URL+'register';
+
+                                          Map<String, dynamic> data = {
+                                            'fullname': _nameController.text,
+                                            'emailid': _emailController.text,
+                                            'country': '101',
+                                            'mobileNumber': _mobileNumberController.text,
+                                            'termscondition': 'TRUE',
+                                            'source_id' : '0'
+                                          };
+
+                                            final response = await http.post(url,
+                                                headers: {
+                                                  "Accept": "application/json",
+                                                  "Content-Type": "application/x-www-form-urlencoded"
+                                                },
+                                                encoding: Encoding.getByName("utf-8"),
+                                                body: data).timeout(Duration(seconds: 15));
+                                            SharedPreferences prefs =
+                                            await SharedPreferences.getInstance();
+
+                                            final int statusCode = response.statusCode;
+
+                                            if(statusCode == 200)
+                                            {
+                                              pr.hide();
+                                              loading = false;
+                                              var convertDataToJson = json.decode(response.body);
+                                              var status = convertDataToJson['status'];
+                                              var statusMessage = convertDataToJson['message'];
+                                              var customer_id = convertDataToJson['customer_id'];
+                                              prefs.setString('customerID', customer_id);
+                                              if(status == true)
+                                              {
+                                                showInSnackBar(statusMessage);
+                                                Navigator.push(
+                                                    context, MaterialPageRoute(builder: (context) => new ActivationCode()));
+                                              }
+                                              else if(status == false && statusMessage == 'Your email id is not verified. please verify your email.')
+                                              {
+                                                Alert(
+                                                  context: context,
+                                                  type: AlertType.warning,
+                                                  title: statusMessage,
+                                                  //desc: statusMessage,
+                                                  buttons: [
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "Resend Activation Code",
+                                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                                      ),
+                                                      onPressed: () {
+                                                        new Future.delayed(const Duration(seconds: 1), () async{
+                                                          // When task is over, close the dialog
+                                                          SharedPreferences prefs =
+                                                          await SharedPreferences.getInstance();
+                                                          var customerID = prefs.getString('customerID');
+                                                          var url =
+                                                              'https://ichapps.com/RestApi/resend-verify-code';
+
+                                                          Map<String, dynamic> data = {
+                                                            'customer_id': customerID
+                                                          };
+
+                                                          final response = await http.post(url,
+                                                              headers: {
+                                                                "Accept": "application/json",
+                                                                "Content-Type": "application/x-www-form-urlencoded"
+                                                              },
+                                                              encoding: Encoding.getByName("utf-8"),
+                                                              body: data).timeout(Duration(seconds: 15));
+
+                                                          final int statusCode = response.statusCode;
+
+                                                          if(statusCode == 200)
+                                                            {
+                                                              var convertDataToJson = json.decode(response.body);
+                                                              var status = convertDataToJson['status'];
+                                                              var statusMessage = convertDataToJson['message'];
+                                                              if(status == true)
+                                                                {
+                                                                  showInSnackBar(statusMessage);
+                                                                  Navigator.push(
+                                                                      context, MaterialPageRoute(builder: (context) => new ActivationCode()));
+                                                                }
+                                                              else
+                                                                {
+                                                                  showInSnackBar(statusMessage);
+                                                                }
+                                                            }
+                                                          else if (statusCode < 200 ||
+                                                              statusCode > 400 ||
+                                                              json == null) {
+                                                            pr.hide();
+                                                            loading = false;
+                                                            showInSnackBar("Error while fetching data");
+                                                            throw new Exception(
+                                                                "Error while fetching data");
+                                                          }
+                                                          else
+                                                          {
+                                                            print(statusCode);
+                                                            pr.hide();
+                                                            loading = false;
+                                                            showInSnackBar("something went wrong, please try again");
+                                                          }
+                                                          Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                         // Navigator.of(context, rootNavigator: true).pop();
+
+                                                        });
+                                                      },
+                                                      color: Color.fromRGBO(0, 179, 134, 1.0),
+                                                    ),
+                                                  ],
+                                                ).show();
+                                              }
+                                              else
+                                              {
+                                                showInSnackBar(statusMessage);
+                                              }
+                                            }
+                                            else if (statusCode < 200 ||
+                                                statusCode > 400 ||
+                                                json == null) {
+                                              pr.hide();
+                                              loading = false;
+                                              showInSnackBar("Error while fetching data");
+                                              throw new Exception(
+                                                  "Error while fetching data");
+                                            }
+                                            else
+                                            {
+                                              print(statusCode);
+                                              pr.hide();
+                                              loading = false;
+                                              showInSnackBar("something went wrong, please try again");
+                                            }
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                            return response;
+                                      },
                                       child: Text(
                                         'Join Now',
                                         style: TextStyle(
@@ -265,51 +428,6 @@ class _SignupPageState extends State<SignupPage> {
                                             fontFamily: 'Montserrat'),
                                       ),
                                     ),
-                                    onTap: () async{
-                                      var connectivityResult = await (Connectivity().checkConnectivity());
-                                      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-                                        // I am connected to a mobile network.
-                                        setState(() {
-                                          _nameController.text.isEmpty ? nameValidation = true : nameValidation = false;
-                                          _emailController.text.isEmpty ? emailValidation = true : emailValidation = false;
-                                          _mobileNumberController.text.isEmpty ? mobileValidation = true : mobileValidation = false;
-                                          _countryNameController.text.isEmpty ? countryNameValidation = true : countryNameValidation = false;
-                                          loading = true;
-                                        });
-
-                                        pr.show();
-                                        var url =
-                                            API_URL+'register';
-
-                                        Map<String, dynamic> data = {
-                                          'fullName': _nameController.text,
-                                          'emailid': _emailController.text,
-                                          'country': 'restapp',
-                                          'mobileNumber': _mobileNumberController.text,
-                                          'termscondition': true,
-                                          'source_id' : 'mobileapp'
-                                        };
-                                        final response = await http.post(url,
-                                            headers: {
-                                              "Accept": "application/json",
-                                              "Content-Type": "application/x-www-form-urlencoded"
-                                            },
-                                            encoding: Encoding.getByName("utf-8"),
-                                            body: data).timeout(Duration(seconds: 15));
-                                        SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-
-                                        final int statusCode = response.statusCode;
-
-
-                                      }
-                                      else
-                                      {
-                                        showInSnackBar("No internet available.Please check your internet connection");
-                                      }
-                                      Navigator.push(
-                                          context, MaterialPageRoute(builder: (context) => new ActivationCode()));
-                                    },
                                   ),
                                 )
                             ),
@@ -351,7 +469,13 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(value)));
+    Fluttertoast.showToast(
+        msg: value,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        fontSize: 16.0
+    );
   }
 
 }
