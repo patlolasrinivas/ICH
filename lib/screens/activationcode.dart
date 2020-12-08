@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ichsampleapp/screens/setpassword.dart';
 
 class ActivationCode extends StatefulWidget {
 
@@ -105,16 +106,17 @@ class _ActivationCodeState extends State<ActivationCode> {
                                     child: GestureDetector(
                                       child: Center(
                                         child: Text(
-                                          'Join Now',
+                                          'Verify',
                                           style: TextStyle(
-                                              color: Colors.black,
+                                              color: Colors.blueGrey,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 16,
                                               fontFamily: 'Montserrat'),
                                         ),
                                       ),
                                       onTap: () {
                                         Navigator.push(
-                                            context, MaterialPageRoute(builder: (context) => new ActivationCode()));
+                                            context, MaterialPageRoute(builder: (context) => new SetPassword()));
                                       },
                                     ),
                                   )
