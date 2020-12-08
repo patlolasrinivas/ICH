@@ -289,6 +289,9 @@ class _SignupPageState extends State<SignupPage> {
                                             'source_id' : '0'
                                           };
 
+                                          print('url'+url);
+                                          print(data);
+
                                             final response = await http.post(url,
                                                 headers: {
                                                   "Accept": "application/json",
@@ -300,6 +303,8 @@ class _SignupPageState extends State<SignupPage> {
                                             await SharedPreferences.getInstance();
 
                                             final int statusCode = response.statusCode;
+
+                                            print(statusCode);
 
                                             if(statusCode == 200)
                                             {

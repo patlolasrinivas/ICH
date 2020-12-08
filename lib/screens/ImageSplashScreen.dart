@@ -17,7 +17,7 @@ class SplashScreenState extends State<ImageSplashScreen> {
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed(LOGIN_SCREEN);
+  Navigator.of(context).pushReplacementNamed(LOGIN_SCREEN);
   }
 
   @override
@@ -29,23 +29,48 @@ class SplashScreenState extends State<ImageSplashScreen> {
   @override
   Widget build(BuildContext context) {
 
+    Size size = MediaQuery.of(context).size;
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
         ScreenUtil(width: 750, height: 1500, allowFontScaling: true);
     return MaterialApp(
       home: Scaffold(
         body: new Stack(
-          fit: StackFit.expand,
+
           children: <Widget>[
-            Center(
-              child: new Image.asset(
-                'assets/splash_background.png',
-                width: MediaQueryData.fromWindow(window).size.width,
-                height: MediaQueryData.fromWindow(window).size.height,
-                fit: BoxFit.fill,
-              ),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Center(
+                  child: new Image.asset(
+                    'assets/splash_background.png',
+                    width: size.width,
+                    height: size.height,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ],
             ),
+            SingleChildScrollView(
+            child: Padding(padding:EdgeInsets.only(left: 0.0, right: 0.0, top: 250.0),
+            child: Column(
+              children:<Widget> [
+                Row(
+                  children: <Widget>[
+                    Image.asset(
+                      "assets/ich-logo.png",
+                      width: ScreenUtil.getInstance().setWidth(750),
+                      height: ScreenUtil.getInstance().setHeight(500),
+                    ),
+                  ],
+                ),
+              ],
+            ) ,
+            ),
+            )
           ],
+
         ),
       ),
     );

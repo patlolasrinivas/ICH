@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:ichsampleapp/screens/activationcode.dart';
 import 'package:ichsampleapp/screens/signup.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -131,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(
                                   color: Colors.blueGrey,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                   fontFamily: 'Montserrat'),
                             ),
                           ),
@@ -142,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
 
                   Container(
-                    padding: EdgeInsets.only(top: 0.0,left: 50.0, right: 50.0,),
+                    padding: EdgeInsets.only(top: 0.0,left: 55.0, right: 55.0,),
                     height: 50.0,
                     color: Colors.transparent,
                     child: Container(
@@ -165,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                   fontFamily: 'Montserrat')),
                         ),
                       ),
