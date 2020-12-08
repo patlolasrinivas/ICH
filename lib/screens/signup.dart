@@ -284,7 +284,7 @@ class _SignupPageState extends State<SignupPage> {
                                             'fullname': _nameController.text,
                                             'emailid': _emailController.text,
                                             'country': '101',
-                                            'mobileNumber': _mobileNumberController.text,
+                                            'mobilenumber': _mobileNumberController.text,
                                             'termscondition': 'TRUE',
                                             'source_id' : '0'
                                           };
@@ -313,8 +313,11 @@ class _SignupPageState extends State<SignupPage> {
                                               if(status == true)
                                               {
                                                 showInSnackBar(statusMessage);
-                                                Navigator.push(
-                                                    context, MaterialPageRoute(builder: (context) => new ActivationCode()));
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (BuildContext ctx) =>
+                                                            ActivationCode()));
                                               }
                                               else if(status == false && statusMessage == 'Your email id is not verified. please verify your email.')
                                               {
@@ -329,8 +332,8 @@ class _SignupPageState extends State<SignupPage> {
                                                         "Resend Activation Code",
                                                         style: TextStyle(color: Colors.white, fontSize: 20),
                                                       ),
-                                                      onPressed: () {
-                                                        new Future.delayed(const Duration(seconds: 1), () async{
+                                                      onPressed: () async{
+                                                       // new Future.delayed(const Duration(seconds: 1), () async{
                                                           // When task is over, close the dialog
                                                           SharedPreferences prefs =
                                                           await SharedPreferences.getInstance();
@@ -341,6 +344,11 @@ class _SignupPageState extends State<SignupPage> {
                                                           Map<String, dynamic> data = {
                                                             'customer_id': customerID
                                                           };
+                                                          Navigator.pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (BuildContext ctx) =>
+                                                                      ActivationCode()));
 
                                                           final response = await http.post(url,
                                                               headers: {
@@ -360,8 +368,11 @@ class _SignupPageState extends State<SignupPage> {
                                                               if(status == true)
                                                                 {
                                                                   showInSnackBar(statusMessage);
-                                                                  Navigator.push(
-                                                                      context, MaterialPageRoute(builder: (context) => new ActivationCode()));
+                                                                  Navigator.pushReplacement(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (BuildContext ctx) =>
+                                                                              ActivationCode()));
                                                                 }
                                                               else
                                                                 {
@@ -384,10 +395,11 @@ class _SignupPageState extends State<SignupPage> {
                                                             loading = false;
                                                             showInSnackBar("something went wrong, please try again");
                                                           }
-                                                          Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                         // Navigator.of(context, rootNavigator: true).pop('dialog');
                                                          // Navigator.of(context, rootNavigator: true).pop();
 
-                                                        });
+                                                      //  }
+                                                        //);
                                                       },
                                                       color: Color.fromRGBO(0, 179, 134, 1.0),
                                                     ),
