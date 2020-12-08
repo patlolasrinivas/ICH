@@ -83,6 +83,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
     pr.style(
       message: 'Please wait...',
@@ -100,399 +101,433 @@ class _SignupPageState extends State<SignupPage> {
     return new Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomPadding: false,
-        body: SingleChildScrollView(
-          child: Stack(
-            children: <Widget>[
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.fromLTRB(15.0, 110.0, 0.0, 0.0),
-                            child: Text(
-                              'Signup',
-                              style:
-                              TextStyle(fontSize: 80.0, fontWeight: FontWeight.bold),
-                            ),
+
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Center(
+                  child: new Image.asset(
+                    'assets/splash_background.png',
+                    width: size.width,
+                    height: size.height,
+                    fit: BoxFit.fill,
+
+                  ),
+                ),
+              ],
+            ),
+            SingleChildScrollView(
+
+              child: Stack(
+                children: <Widget>[
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Stack(
+                            children: <Widget>[
+
+                              Container(
+                                padding: EdgeInsets.fromLTRB(100.0, 125.0, 0.0, 0.0),
+                              )
+                            ],
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(200.0, 125.0, 0.0, 0.0),
-                            child: Text(
-                              '.',
-                              style: TextStyle(
-                                  fontSize: 80.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                        padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
-                        child: Column(
-                          children: <Widget>[
-                            TextField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                  labelText: 'Name',
-                                  labelStyle: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey),
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(top: 35.0, left: 20.0, right: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                TextField(
+
+                                  style: TextStyle(color: Colors.white),
+                                  controller: _nameController,
+                                  decoration: InputDecoration(
+                                      labelText: 'Name',
+                                      labelStyle: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                       errorText: nameValidation ? 'Name Can\'t Be Empty' : null,
-                                      hintText: 'Name',
+                                      //hintText: 'Name',
                                       hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0),
+                                          color: Colors.white, fontSize: 12.0),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                      ),
                                       focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.green))),
-                            ),
-                            SizedBox(height: 15.0),
-                            TextField(
-                              controller: _emailController,
-
-                              decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  labelStyle: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey
+                                          borderSide: BorderSide(color: Colors.white))),
+                                ),
+                                SizedBox(height: 15.0),
+                                TextField(
+                                  style: TextStyle(color: Colors.white),
+                                  controller: _emailController,
+                                  decoration: InputDecoration(
+                                      labelText: 'Email',
+                                      labelStyle: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white
+                                      ),
+                                      errorText: emailValidation ? 'Invalid Email Format' : null,
+                                     // hintText: 'Email',
+                                      hintStyle: TextStyle(
+                                          color: Colors.white, fontSize: 12.0),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white)
+                                      )
                                   ),
-                                  errorText: emailValidation ? 'Invalid Email Format' : null,
-                                  hintText: 'Email',
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.green)
-                                  )
-                              ),
-                            ),
-                            SizedBox(height: 15.0),
-                            Container(
-                              child: Stack(
-                                children: <Widget>[
-                                  searchTextField = AutoCompleteTextField<Countries>(
-                                      style: new TextStyle(color: Colors.black, fontSize: 16.0),
-                                      controller: _countryNameController,
-                                      decoration: new InputDecoration(
-                                          suffixIcon: Container(
-                                            width: 85.0,
-                                            height: 60.0,
+                                ),
+                                SizedBox(height: 15.0),
+                                Container(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      searchTextField = AutoCompleteTextField<Countries>(
+                                          style: new TextStyle(color: Colors.white, fontSize: 16.0),
+                                          controller: _countryNameController,
+                                          decoration: new InputDecoration(
+                                              suffixIcon: Container(
+                                                width: 85.0,
+                                                height: 60.0,
+                                              ),
+                                              contentPadding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
+                                              filled: true,
+                                              errorText: countryNameValidation ? 'County Name Can\'t Be Empty' : null,
+
+                                              hintText: 'Search Country Name',
+                                              hintStyle: TextStyle(color: Colors.white)),
+
+                                          itemSubmitted: (item) {
+                                            setState(() => searchTextField.textField.controller.text =
+                                                item.name);
+                                          },
+                                          clearOnSubmit: false,
+                                          key: key,
+                                          suggestions: _records.records,
+                                          itemBuilder: (context, item) {
+                                            return Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(item.name,
+                                                  style: TextStyle(
+                                                      fontSize: 16.0
+                                                  ),),
+                                              ],
+                                            );
+                                          },
+                                          itemSorter: (a, b) {
+                                            return a.name.compareTo(b.name);
+                                          },
+                                          itemFilter: (item, query) {
+                                            return item.name
+                                                .toLowerCase()
+                                                .startsWith(query.toLowerCase());
+                                          }),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 15.0),
+                                TextField(
+                                  style: TextStyle(color: Colors.white),
+                                  controller: _mobileNumberController,
+                                  decoration: InputDecoration(
+                                      labelText: 'Mobile Number',
+                                      labelStyle: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white
+                                      ),
+                                      errorText: mobileValidation ? 'Mobile Number Can\'t Be Empty' : null,
+                                      //hintText: 'Mobile Number',
+                                      hintStyle: TextStyle(
+                                          color: Colors.white, fontSize: 12.0),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.green)
+                                      )
+                                  ),
+                                ),
+
+                                SizedBox(height: 15.0),
+
+                                TextField(
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      labelText: 'Referal Code (Optional)',
+                                      labelStyle: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white
+                                      ),
+                                      hintStyle: TextStyle(
+                                          color: Colors.white, fontSize: 12.0),
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.white)
+                                      )
+                                  ),
+                                ),
+
+                                Container(
+                                    height: 150.0,
+                                    padding: const EdgeInsets.all(50.0),
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      shadowColor: Colors.white,
+                                      color: Colors.white,
+                                      elevation: 7.0,
+                                      child: GestureDetector(
+                                        child: Center(
+                                          child: Text(
+                                            'Join Now',
+                                            style: TextStyle(
+                                                color: Colors.blueGrey,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                fontFamily: 'Montserrat'),
                                           ),
-                                          contentPadding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
-                                          filled: true,
-                                          errorText: countryNameValidation ? 'County Name Can\'t Be Empty' : null,
-                                          hintText: 'Search Country Name',
-                                          hintStyle: TextStyle(color: Colors.black)),
-                                      itemSubmitted: (item) {
-                                        setState(() => searchTextField.textField.controller.text =
-                                            item.name);
-                                      },
-                                      clearOnSubmit: false,
-                                      key: key,
-                                      suggestions: _records.records,
-                                      itemBuilder: (context, item) {
-                                        return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(item.name,
-                                              style: TextStyle(
-                                                  fontSize: 16.0
-                                              ),),
-                                          ],
-                                        );
-                                      },
-                                      itemSorter: (a, b) {
-                                        return a.name.compareTo(b.name);
-                                      },
-                                      itemFilter: (item, query) {
-                                        return item.name
-                                            .toLowerCase()
-                                            .startsWith(query.toLowerCase());
-                                      }),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 15.0),
-                            TextField(
-                              controller: _mobileNumberController,
-                              decoration: InputDecoration(
-                                  labelText: 'Mobile Number',
-                                  labelStyle: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey
-                                  ),
-                                  errorText: mobileValidation ? 'Mobile Number Can\'t Be Empty' : null,
-                                  hintText: 'Mobile Number',
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey, fontSize: 12.0),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.green)
-                                  )
-                              ),
-                            ),
+                                        ),
+                                                                                        onTap: () async{
+                                                    var connectivityResult = await (Connectivity().checkConnectivity());
+                                                    if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+                                                    // I am connected to a mobile network.
+                                                    setState(() {
+                                                    _nameController.text.isEmpty ? nameValidation = true : nameValidation = false;
+                                                    _emailController.text.isEmpty ? emailValidation = true : emailValidation = false;
+                                                    _mobileNumberController.text.isEmpty ? mobileValidation = true : mobileValidation = false;
+                                                    _countryNameController.text.isEmpty ? countryNameValidation = true : countryNameValidation = false;
+                                                    loading = true;
+                                                    });
+                                                    }
+                                                    else
+                                                    {
+                                                    showInSnackBar("No internet available.Please check your internet connection");
+                                                    }
+                                                    pr.show();
+                                                    var url =
+                                                    API_URL+'register';
 
-                            SizedBox(height: 15.0),
+                                                    Map<String, dynamic> data = {
+                                                    'fullname': _nameController.text,
+                                                    'emailid': _emailController.text,
+                                                    'country': '101',
+                                                    'mobilenumber': _mobileNumberController.text,
+                                                    'termscondition': 'TRUE',
+                                                    'source_id' : '0'
+                                                    };
 
-                            TextField(
-                              decoration: InputDecoration(
-                                  labelText: 'Referal Code (Optional)',
-                                  labelStyle: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.green)
-                                  )
-                              ),
-                            ),
-                            SizedBox(height: 50.0),
-                            Container(
-                                height: 45.0,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  shadowColor: Colors.greenAccent,
-                                  color: Colors.green,
-                                  elevation: 7.0,
-                                  child: Material(
-                                    child: InkWell(
-                                      onTap: () async{
-                                        var connectivityResult = await (Connectivity().checkConnectivity());
-                                        if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-                                          // I am connected to a mobile network.
-                                          setState(() {
-                                            _nameController.text.isEmpty ? nameValidation = true : nameValidation = false;
-                                            _emailController.text.isEmpty ? emailValidation = true : emailValidation = false;
-                                            _mobileNumberController.text.isEmpty ? mobileValidation = true : mobileValidation = false;
-                                            _countryNameController.text.isEmpty ? countryNameValidation = true : countryNameValidation = false;
-                                            loading = true;
-                                          });
-                                        }
-                                        else
-                                        {
-                                          showInSnackBar("No internet available.Please check your internet connection");
-                                        }
-                                          pr.show();
-                                          var url =
-                                              API_URL+'register';
+                                                    print('url'+url);
+                                                    print(data);
 
-                                          Map<String, dynamic> data = {
-                                            'fullname': _nameController.text,
-                                            'emailid': _emailController.text,
-                                            'country': '101',
-                                            'mobilenumber': _mobileNumberController.text,
-                                            'termscondition': 'TRUE',
-                                            'source_id' : '0'
-                                          };
+                                                    final response = await http.post(url,
+                                                    headers: {
+                                                    "Accept": "application/json",
+                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                    },
+                                                    encoding: Encoding.getByName("utf-8"),
+                                                    body: data).timeout(Duration(seconds: 15));
+                                                    SharedPreferences prefs =
+                                                    await SharedPreferences.getInstance();
 
-                                          print('url'+url);
-                                          print(data);
+                                                    final int statusCode = response.statusCode;
 
-                                            final response = await http.post(url,
-                                                headers: {
-                                                  "Accept": "application/json",
-                                                  "Content-Type": "application/x-www-form-urlencoded"
-                                                },
-                                                encoding: Encoding.getByName("utf-8"),
-                                                body: data).timeout(Duration(seconds: 15));
-                                            SharedPreferences prefs =
-                                            await SharedPreferences.getInstance();
+                                                    print(statusCode);
 
-                                            final int statusCode = response.statusCode;
-
-                                            print(statusCode);
-
-                                            if(statusCode == 200)
-                                            {
-                                              pr.hide();
-                                              loading = false;
-                                              var convertDataToJson = json.decode(response.body);
-                                              var status = convertDataToJson['status'];
-                                              var statusMessage = convertDataToJson['message'];
-                                              var customer_id = convertDataToJson['customer_id'];
-                                              prefs.setString('customerID', customer_id);
-                                              prefs.setString('customerEmail', _emailController.text);
-                                              if(status == true)
-                                              {
-                                                showInSnackBar(statusMessage);
-                                                Navigator.pushReplacement(
+                                                    if(statusCode == 200)
+                                                    {
+                                                    pr.hide();
+                                                    loading = false;
+                                                    var convertDataToJson = json.decode(response.body);
+                                                    var status = convertDataToJson['status'];
+                                                    var statusMessage = convertDataToJson['message'];
+                                                    var customer_id = convertDataToJson['customer_id'];
+                                                    prefs.setString('customerID', customer_id);
+                                                    prefs.setString('customerEmail', _emailController.text);
+                                                    if(status == true)
+                                                    {
+                                                    showInSnackBar(statusMessage);
+                                                    Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
-                                                        builder: (BuildContext ctx) =>
-                                                            ActivationCode()));
-                                              }
-                                              else if(status == false && statusMessage == 'Your email id is not verified. please verify your email.')
-                                              {
-                                                Alert(
-                                                  context: context,
-                                                  type: AlertType.warning,
-                                                  title: statusMessage,
-                                                  //desc: statusMessage,
-                                                  buttons: [
+                                                    builder: (BuildContext ctx) =>
+                                                    ActivationCode()));
+                                                    }
+                                                    else if(status == false && statusMessage == 'Your email id is not verified. please verify your email.')
+                                                    {
+                                                    Alert(
+                                                    context: context,
+                                                    type: AlertType.warning,
+                                                    title: statusMessage,
+                                                    //desc: statusMessage,
+                                                    buttons: [
                                                     DialogButton(
-                                                      child: Text(
-                                                        "Resend Activation Code",
-                                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                                      ),
-                                                      onPressed: () async{
-                                                       // new Future.delayed(const Duration(seconds: 1), () async{
-                                                          // When task is over, close the dialog
-                                                          SharedPreferences prefs =
-                                                          await SharedPreferences.getInstance();
-                                                          var customerID = prefs.getString('customerID');
-                                                          var url =
-                                                              'https://ichapps.com/RestApi/resend-verify-code';
-
-                                                          Map<String, dynamic> data = {
-                                                            'customer_id': customerID
-                                                          };
-                                                          Navigator.pushReplacement(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (BuildContext ctx) =>
-                                                                      ActivationCode()));
-
-                                                          final response = await http.post(url,
-                                                              headers: {
-                                                                "Accept": "application/json",
-                                                                "Content-Type": "application/x-www-form-urlencoded"
-                                                              },
-                                                              encoding: Encoding.getByName("utf-8"),
-                                                              body: data).timeout(Duration(seconds: 15));
-
-                                                          final int statusCode = response.statusCode;
-
-                                                          if(statusCode == 200)
-                                                            {
-                                                              var convertDataToJson = json.decode(response.body);
-                                                              var status = convertDataToJson['status'];
-                                                              var statusMessage = convertDataToJson['message'];
-                                                              if(status == true)
-                                                                {
-                                                                  showInSnackBar(statusMessage);
-                                                                  Navigator.pushReplacement(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (BuildContext ctx) =>
-                                                                              ActivationCode()));
-                                                                }
-                                                              else
-                                                                {
-                                                                  showInSnackBar(statusMessage);
-                                                                }
-                                                            }
-                                                          else if (statusCode < 200 ||
-                                                              statusCode > 400 ||
-                                                              json == null) {
-                                                            pr.hide();
-                                                            loading = false;
-                                                            var convertDataToJson = json.decode(response.body);
-                                                            var statusMessage = convertDataToJson['message'];
-                                                            showInSnackBar(statusMessage);
-                                                            throw new Exception(
-                                                                "Error while fetching data");
-                                                          }
-                                                          else
-                                                          {
-                                                            print(statusCode);
-                                                            pr.hide();
-                                                            loading = false;
-                                                            var convertDataToJson = json.decode(response.body);
-                                                            var statusMessage = convertDataToJson['message'];
-                                                            showInSnackBar(statusMessage);
-                                                          }
-                                                         // Navigator.of(context, rootNavigator: true).pop('dialog');
-                                                         // Navigator.of(context, rootNavigator: true).pop();
-
-                                                      //  }
-                                                        //);
-                                                      },
-                                                      color: Color.fromRGBO(0, 179, 134, 1.0),
+                                                    child: Text(
+                                                    "Resend Activation Code",
+                                                    style: TextStyle(color: Colors.white, fontSize: 20),
                                                     ),
-                                                  ],
-                                                ).show();
-                                              }
-                                              else
-                                              {
-                                                showInSnackBar(statusMessage);
-                                              }
-                                            }
-                                            else if (statusCode < 200 ||
-                                                statusCode > 400 ||
-                                                json == null) {
-                                              pr.hide();
-                                              loading = false;
-                                              var convertDataToJson = json.decode(response.body);
-                                              var statusMessage = convertDataToJson['message'];
-                                              showInSnackBar(statusMessage);
-                                              //showInSnackBar("Error while fetching data");
-                                              throw new Exception(
-                                                  "Error while fetching data");
-                                            }
-                                            else
-                                            {
-                                              print(statusCode);
-                                              pr.hide();
-                                              loading = false;
-                                              var convertDataToJson = json.decode(response.body);
-                                              var statusMessage = convertDataToJson['message'];
-                                              showInSnackBar(statusMessage);
-                                             // showInSnackBar("something went wrong, please try again");
-                                            }
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                            return response;
-                                      },
-                                      child: Text(
-                                        'Join Now',
-                                        style: TextStyle(
+                                                    onPressed: () async{
+                                                    // new Future.delayed(const Duration(seconds: 1), () async{
+                                                    // When task is over, close the dialog
+                                                    SharedPreferences prefs =
+                                                    await SharedPreferences.getInstance();
+                                                    var customerID = prefs.getString('customerID');
+                                                    var url =
+                                                    'https://ichapps.com/RestApi/resend-verify-code';
+
+                                                    Map<String, dynamic> data = {
+                                                    'customer_id': customerID
+                                                    };
+                                                    Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                    builder: (BuildContext ctx) =>
+                                                    ActivationCode()));
+
+                                                    final response = await http.post(url,
+                                                    headers: {
+                                                    "Accept": "application/json",
+                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                    },
+                                                    encoding: Encoding.getByName("utf-8"),
+                                                    body: data).timeout(Duration(seconds: 15));
+
+                                                    final int statusCode = response.statusCode;
+
+                                                    if(statusCode == 200)
+                                                    {
+                                                    var convertDataToJson = json.decode(response.body);
+                                                    var status = convertDataToJson['status'];
+                                                    var statusMessage = convertDataToJson['message'];
+                                                    if(status == true)
+                                                    {
+                                                    showInSnackBar(statusMessage);
+                                                    Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                    builder: (BuildContext ctx) =>
+                                                    ActivationCode()));
+                                                    }
+                                                    else
+                                                    {
+                                                    showInSnackBar(statusMessage);
+                                                    }
+                                                    }
+                                                    else if (statusCode < 200 ||
+                                                    statusCode > 400 ||
+                                                    json == null) {
+                                                    pr.hide();
+                                                    loading = false;
+                                                    var convertDataToJson = json.decode(response.body);
+                                                    var statusMessage = convertDataToJson['message'];
+                                                    showInSnackBar(statusMessage);
+                                                    throw new Exception(
+                                                    "Error while fetching data");
+                                                    }
+                                                    else
+                                                    {
+                                                    print(statusCode);
+                                                    pr.hide();
+                                                    loading = false;
+                                                    var convertDataToJson = json.decode(response.body);
+                                                    var statusMessage = convertDataToJson['message'];
+                                                    showInSnackBar(statusMessage);
+                                                    }
+                                                    // Navigator.of(context, rootNavigator: true).pop('dialog');
+                                                    // Navigator.of(context, rootNavigator: true).pop();
+
+                                                    //  }
+                                                    //);
+                                                    },
+                                                    color: Color.fromRGBO(0, 179, 134, 1.0),
+                                                    ),
+                                                    ],
+                                                    ).show();
+                                                    }
+                                                    else
+                                                    {
+                                                    showInSnackBar(statusMessage);
+                                                    }
+                                                    }
+                                                    else if (statusCode < 200 ||
+                                                    statusCode > 400 ||
+                                                    json == null) {
+                                                    pr.hide();
+                                                    loading = false;
+                                                    var convertDataToJson = json.decode(response.body);
+                                                    var statusMessage = convertDataToJson['message'];
+                                                    showInSnackBar(statusMessage);
+                                                    //showInSnackBar("Error while fetching data");
+                                                    throw new Exception(
+                                                    "Error while fetching data");
+                                                    }
+                                                    else
+                                                    {
+                                                    print(statusCode);
+                                                    pr.hide();
+                                                    loading = false;
+                                                    var convertDataToJson = json.decode(response.body);
+                                                    var statusMessage = convertDataToJson['message'];
+                                                    showInSnackBar(statusMessage);
+                                                    // showInSnackBar("something went wrong, please try again");
+                                                    }
+                                                    setState(() {
+                                                    loading = false;
+                                                    });
+                                                    return response;
+                                                    },
+
+                                      ),
+                                    )
+                                ),
+
+                                Container(
+                                  padding: EdgeInsets.only(top: 0.0,left: 55.0, right: 55.0,),
+                                  height: 50.0,
+                                  color: Colors.transparent,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
                                             color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Montserrat'),
+                                            style: BorderStyle.solid,
+                                            width: 1.0),
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(10.0)),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child:
+
+                                      Center(
+                                        child: Text('Go Back',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                                fontFamily: 'Montserrat')),
                                       ),
                                     ),
                                   ),
-                                )
-                            ),
-                            SizedBox(height: 20.0),
-                            Container(
-                              height: 45.0,
-                              color: Colors.transparent,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black,
-                                        style: BorderStyle.solid,
-                                        width: 1.0),
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child:
-
-                                  Center(
-                                    child: Text('Go Back',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Montserrat')),
-                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ]
+                              ],
+                            )),
+                      ]
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+
+            )
+          ],
+        )
     );
   }
 

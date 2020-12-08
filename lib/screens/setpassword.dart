@@ -108,7 +108,6 @@ class _SetPasswordState extends State<SetPassword> {
                       Container(
                         child: Stack(
                           children: <Widget>[
-
                             Container(
                               padding: EdgeInsets.fromLTRB(100.0, 50.0, 0.0, 0.0),
                               child: Text(
@@ -127,23 +126,9 @@ class _SetPasswordState extends State<SetPassword> {
                           child: Column(
                             children: <Widget>[
                               TextFormField(
+                                style: TextStyle(color: Colors.white),
                                 controller: _passwordController,
                                 obscureText: true,
-                                validator: (val){
-                                  if(val.isEmpty)
-                                    return 'Empty';
-                                  return null;
-                                },
-                                /*validator: (String value){
-                                  confirmPass = value;
-                                  if (value.isEmpty) {
-                                  return "Please Enter New Password";
-                                  } else if (value.length < 8) {
-                                  return "Password must be atleast 8 characters long";
-                                  } else {
-                                  return null;
-                                  }
-                              },*/
                                 decoration: InputDecoration(
                                     labelText: 'Password',
                                     labelStyle: TextStyle(
@@ -151,31 +136,19 @@ class _SetPasswordState extends State<SetPassword> {
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                         errorText: passwordValidation ? 'Password Can\'t Be Empty' : null,
+                                    hintStyle: TextStyle(
+                                        color: Colors.white, fontSize: 12.0),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                    ),
                                     focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(color: Colors.white))),
                               ),
                               SizedBox(height: 20.0),
                               TextFormField(
+                                style: TextStyle(color: Colors.white),
                                controller: _confirmpasswordController,
                                 obscureText: true,
-                                  validator: (val){
-                                    if(val.isEmpty)
-                                      return 'Empty';
-                                    if(val != _passwordController.text)
-                                      return 'Not Match';
-                                    return null;
-                                  },
-                                /*validator: (String value) {
-                                  if (value.isEmpty) {
-                                    return "Please Re-Enter New Password";
-                                  } else if (value.length < 8) {
-                                    return "Password must be atleast 8 characters long";
-                                  } else if (value != confirmPass) {
-                                    return "Password must be same as above";
-                                  } else {
-                                    return null;
-                                  }
-                                  },*/
                                 decoration: InputDecoration(
                                     labelText: 'Confirm Password',
                                     labelStyle: TextStyle(
@@ -185,6 +158,11 @@ class _SetPasswordState extends State<SetPassword> {
                                     errorText: confirmpasswordValidation ? 'Confirm Password Can\'t Be Empty' : null,
                                     // hintText: 'EMAIL',
                                     // hintStyle: ,
+                                    hintStyle: TextStyle(
+                                        color: Colors.white, fontSize: 12.0),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                    ),
                                     focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(color: Colors.white))),
                               ),

@@ -114,6 +114,7 @@ class _ActivationCodeState extends State<ActivationCode> {
                           child: Column(
                             children: <Widget>[
                               TextField(
+                                style: TextStyle(color: Colors.white),
                                 controller: _emailVerificationController,
                                 decoration: InputDecoration(
                                     labelText: 'Enter Verification Code',
@@ -123,6 +124,11 @@ class _ActivationCodeState extends State<ActivationCode> {
                                         color: Colors.white),
                                     // hintText: 'EMAIL',
                                     // hintStyle: ,
+                                    hintStyle: TextStyle(
+                                        color: Colors.white, fontSize: 12.0),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.white),
+                                    ),
                                     focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(color: Colors.white))),
                               ),
@@ -130,7 +136,7 @@ class _ActivationCodeState extends State<ActivationCode> {
                               Container(
                                   height: 45.0,
                                   child: Material(
-                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                     shadowColor: Colors.white,
                                     color: Colors.white,
                                     elevation: 7.0,
