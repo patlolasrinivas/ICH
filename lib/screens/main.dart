@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ichsampleapp/Constant/Constant.dart';
-import 'package:ichsampleapp/screens/signup.dart';
+import 'package:ichsampleapp/screens/LoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:ichsampleapp/screens/ImageSplashScreen.dart';
@@ -21,7 +21,7 @@ Future main() async {
         home: new ImageSplashScreen(),
 
         routes: <String, WidgetBuilder>{
-          SIGNUP_SCREEN : (BuildContext context) => new SignupPage()
+          LOGIN_SCREEN : (BuildContext context) => new LoginScreen()
         },
       )));
 }

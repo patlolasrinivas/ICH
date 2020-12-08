@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +17,7 @@ class SplashScreenState extends State<ImageSplashScreen> {
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed(SIGNUP_SCREEN);
+    Navigator.of(context).pushReplacementNamed(LOGIN_SCREEN);
   }
 
   @override
