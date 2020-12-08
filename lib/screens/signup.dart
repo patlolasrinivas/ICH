@@ -315,6 +315,7 @@ class _SignupPageState extends State<SignupPage> {
                                               var statusMessage = convertDataToJson['message'];
                                               var customer_id = convertDataToJson['customer_id'];
                                               prefs.setString('customerID', customer_id);
+                                              prefs.setString('customerEmail', _emailController.text);
                                               if(status == true)
                                               {
                                                 showInSnackBar(statusMessage);
@@ -389,7 +390,9 @@ class _SignupPageState extends State<SignupPage> {
                                                               json == null) {
                                                             pr.hide();
                                                             loading = false;
-                                                            showInSnackBar("Error while fetching data");
+                                                            var convertDataToJson = json.decode(response.body);
+                                                            var statusMessage = convertDataToJson['message'];
+                                                            showInSnackBar(statusMessage);
                                                             throw new Exception(
                                                                 "Error while fetching data");
                                                           }
@@ -398,7 +401,9 @@ class _SignupPageState extends State<SignupPage> {
                                                             print(statusCode);
                                                             pr.hide();
                                                             loading = false;
-                                                            showInSnackBar("something went wrong, please try again");
+                                                            var convertDataToJson = json.decode(response.body);
+                                                            var statusMessage = convertDataToJson['message'];
+                                                            showInSnackBar(statusMessage);
                                                           }
                                                          // Navigator.of(context, rootNavigator: true).pop('dialog');
                                                          // Navigator.of(context, rootNavigator: true).pop();
@@ -421,7 +426,10 @@ class _SignupPageState extends State<SignupPage> {
                                                 json == null) {
                                               pr.hide();
                                               loading = false;
-                                              showInSnackBar("Error while fetching data");
+                                              var convertDataToJson = json.decode(response.body);
+                                              var statusMessage = convertDataToJson['message'];
+                                              showInSnackBar(statusMessage);
+                                              //showInSnackBar("Error while fetching data");
                                               throw new Exception(
                                                   "Error while fetching data");
                                             }
@@ -430,7 +438,10 @@ class _SignupPageState extends State<SignupPage> {
                                               print(statusCode);
                                               pr.hide();
                                               loading = false;
-                                              showInSnackBar("something went wrong, please try again");
+                                              var convertDataToJson = json.decode(response.body);
+                                              var statusMessage = convertDataToJson['message'];
+                                              showInSnackBar(statusMessage);
+                                             // showInSnackBar("something went wrong, please try again");
                                             }
                                         setState(() {
                                           loading = false;

@@ -2,6 +2,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ichsampleapp/Constant/Constant.dart';
+import 'package:ichsampleapp/screens/LoginScreen.dart';
 import 'package:ichsampleapp/screens/setpassword.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -29,7 +30,7 @@ class _ActivationCodeState extends State<ActivationCode> {
   final _emailVerificationController =  TextEditingController();
   bool emailValidation = false;
   bool loading;
-
+  ProgressDialog pr;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +147,6 @@ class _ActivationCodeState extends State<ActivationCode> {
                                       ),
                                       onTap: () async {
 
-
                                         var connectivityResult = await (Connectivity().checkConnectivity());
                                         if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
                                           // I am connected to a mobile network.
@@ -159,12 +159,16 @@ class _ActivationCodeState extends State<ActivationCode> {
                                         {
                                           showInSnackBar("No internet available.Please check your internet connection");
                                         }
+                                        SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+
+                                        var email = prefs.getString('customerEmail');
                                         pr.show();
                                         var url =
                                             API_URL+'activate-account';
 
                                         Map<String, dynamic> data = {
-                                          'email':'ichappstest3@ichapps.com',
+                                          'email':email,
                                           'email_verify_code': _emailVerificationController.text,
                                         };
 
@@ -179,9 +183,6 @@ class _ActivationCodeState extends State<ActivationCode> {
                                             },
                                             encoding: Encoding.getByName("utf-8"),
                                             body: data).timeout(Duration(seconds: 15));
-                                        SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-
                                         final int statusCode = response.statusCode;
 
                                         print(statusCode);
@@ -193,7 +194,6 @@ class _ActivationCodeState extends State<ActivationCode> {
                                           var convertDataToJson = json.decode(response.body);
                                           var status = convertDataToJson['status'];
                                           var statusMessage = convertDataToJson['message'];
-                                          var customer_id = convertDataToJson['customer_id'];
 
                                           if(status == true)
                                           {
@@ -212,7 +212,15 @@ class _ActivationCodeState extends State<ActivationCode> {
                                             json == null) {
                                           pr.hide();
                                           loading = false;
-                                          showInSnackBar("Error while fetching data");
+                                          var convertDataToJson = json.decode(response.body);
+                                          var statusMessage = convertDataToJson['message'];
+                                          showInSnackBar(statusMessage);
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext ctx) =>
+                                                      LoginScreen()));
+                                          //showInSnackBar("Error while fetching data");
                                           throw new Exception(
                                               "Error while fetching data");
                                         }
@@ -221,7 +229,15 @@ class _ActivationCodeState extends State<ActivationCode> {
                                           print(statusCode);
                                           pr.show();
                                           loading = false;
-                                          showInSnackBar("something went wrong, please try again");
+                                          var convertDataToJson = json.decode(response.body);
+                                          var statusMessage = convertDataToJson['message'];
+                                          showInSnackBar(statusMessage);
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext ctx) =>
+                                                      LoginScreen()));
+                                         // showInSnackBar("something went wrong, please try again");
                                         }
 
                                         setState(() {

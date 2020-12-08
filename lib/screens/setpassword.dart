@@ -68,6 +68,7 @@ class _SetPasswordState extends State<SetPassword> {
     return new
     Scaffold
       (
+      key: _form,
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Stack(
@@ -127,8 +128,14 @@ class _SetPasswordState extends State<SetPassword> {
                             children: <Widget>[
                               TextFormField(
                                 controller: _passwordController,
+                                obscureText: true,
+                                validator: (val){
+                                  if(val.isEmpty)
+                                    return 'Empty';
+                                  return null;
+                                },
                                 /*validator: (String value){
-                                  confirmPass;
+                                  confirmPass = value;
                                   if (value.isEmpty) {
                                   return "Please Enter New Password";
                                   } else if (value.length < 8) {
@@ -143,7 +150,6 @@ class _SetPasswordState extends State<SetPassword> {
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
-
                                         errorText: passwordValidation ? 'Password Can\'t Be Empty' : null,
                                     focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(color: Colors.white))),
@@ -151,7 +157,14 @@ class _SetPasswordState extends State<SetPassword> {
                               SizedBox(height: 20.0),
                               TextFormField(
                                controller: _confirmpasswordController,
-
+                                obscureText: true,
+                                  validator: (val){
+                                    if(val.isEmpty)
+                                      return 'Empty';
+                                    if(val != _passwordController.text)
+                                      return 'Not Match';
+                                    return null;
+                                  },
                                 /*validator: (String value) {
                                   if (value.isEmpty) {
                                     return "Please Re-Enter New Password";
@@ -211,75 +224,79 @@ class _SetPasswordState extends State<SetPassword> {
                                         showInSnackBar("No internet available.Please check your internet connection");
                                         }
 
-                                        pr.show();
-                                        SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                        var customerID = prefs.getString('customerID');
-                                        var url =
-                                            API_URL+'set_password';
+                                      //  if (_form.currentState.validate()) {
+                                          pr.show();
+                                          SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                          var customerID = prefs.getString('customerID');
+                                          var url =
+                                              API_URL+'set_password';
 
-                                        Map<String, dynamic> data = {
-                                          'user_id':'8525',
-                                          'password': _passwordController.text,
-                                          'cpassword': _confirmpasswordController.text,
-                                        };
-                                        print('URL'+url);
-                                        print(data);
+                                          Map<String, dynamic> data = {
+                                            'user_id': customerID,
+                                            'password': _passwordController.text,
+                                            'cpassword': _confirmpasswordController.text,
+                                          };
+                                          print('URL'+url);
+                                          print(data);
 
-                                        final response = await http.post(url,
-                                            headers: {
-                                              "Accept": "application/json",
-                                              "Content-Type": "application/x-www-form-urlencoded"
-                                            },
-                                            encoding: Encoding.getByName("utf-8"),
-                                            body: data).timeout(Duration(seconds: 15));
-                                        final int statusCode = response.statusCode;
+                                          final response = await http.post(url,
+                                              headers: {
+                                                "Accept": "application/json",
+                                                "Content-Type": "application/x-www-form-urlencoded"
+                                              },
+                                              encoding: Encoding.getByName("utf-8"),
+                                              body: data).timeout(Duration(seconds: 15));
+                                          final int statusCode = response.statusCode;
 
-                                        if(statusCode == 200)
-                                        {
-                                          pr.hide();
-                                          loading = false;
-                                          var convertDataToJson = json.decode(response.body);
-                                          var status = convertDataToJson['status'];
-                                          var statusMessage = convertDataToJson['message'];
-                                          var customer_id = convertDataToJson['customer_id'];
-                                          var user_reward_points = convertDataToJson['user_reward_points'];
-                                          var user_money = convertDataToJson['user_money'];
-                                          var user_money_type = convertDataToJson['user_money_type'];
-                                          if(status == true)
+                                          if(statusCode == 200)
                                           {
-                                            showInSnackBar(statusMessage);
-                                            Navigator.push(
-                                                context, MaterialPageRoute(builder: (context) => new LoginScreen()));
+                                            pr.hide();
+                                            loading = false;
+                                            var convertDataToJson = json.decode(response.body);
+                                            var status = convertDataToJson['status'];
+                                            var statusMessage = convertDataToJson['message'];
+                                            var customer_id = convertDataToJson['customer_id'];
+                                            var user_reward_points = convertDataToJson['user_reward_points'];
+                                            var user_money = convertDataToJson['user_money'];
+                                            var user_money_type = convertDataToJson['user_money_type'];
+                                            if(status == true)
+                                            {
+                                              showInSnackBar(statusMessage);
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext ctx) =>
+                                                          LoginScreen()));
+                                            }
+                                            else
+                                            {
+                                              showInSnackBar(statusMessage);
+                                            }
+
+                                          }
+
+                                          else if (statusCode < 200 ||
+                                              statusCode > 400 ||
+                                              json == null) {
+                                            pr.hide();
+                                            loading = false;
+                                            showInSnackBar("Error while fetching data");
+                                            throw new Exception(
+                                                "Error while fetching data");
                                           }
                                           else
                                           {
-                                            showInSnackBar(statusMessage);
+                                            print(statusCode);
+                                            pr.hide();
+                                            loading = false;
+                                            showInSnackBar("something went wrong, please try again");
                                           }
-
-                                        }
-
-                                        else if (statusCode < 200 ||
-                                            statusCode > 400 ||
-                                            json == null) {
-                                          pr.hide();
-                                          loading = false;
-                                          showInSnackBar("Error while fetching data");
-                                          throw new Exception(
-                                              "Error while fetching data");
-                                        }
-                                        else
-                                        {
-                                          print(statusCode);
-                                          pr.hide();
-                                          loading = false;
-                                          showInSnackBar("something went wrong, please try again");
-                                        }
-
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                        return response;
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                          return response;
+                                      //  }
                                         },
                                     ),
                                   )
@@ -305,7 +322,6 @@ void showInSnackBar(String value) {
       timeInSecForIosWeb: 1,
       fontSize: 16.0
   );
-  _form.currentState.validate();
 }
 
 }
